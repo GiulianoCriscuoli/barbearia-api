@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8074:8074"
+    volumes:
+      - ./:/var/www/html
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: barbearia
+      MYSQL_USER: gdias
+      MYSQL_PASSWORD: chidori@450
