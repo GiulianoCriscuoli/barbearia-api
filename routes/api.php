@@ -7,10 +7,12 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\BarbeiroController;
 
-Route::post('login', [AutenticacaoController::class, 'login']);
+Route::get('401', [AutenticacaoController::class, 'naoAutorizado'])->name('login');
+Route::post('cadastrar', [AutenticacaoController::class, 'cadastrar']);
+Route::post('logar', [AutenticacaoController::class, 'logar']);
 Route::post('sair', [AutenticacaoController::class, 'sair']);
 Route::post('atualizar/login', [AutenticacaoController::class, 'atualizarLogin']);
-Route::post('cadastrar', [AutenticacaoController::class, 'cadastrarLogin']);
+Route::post('atualiza-token', [AutenticacaoController::class, 'atualizaToken']);
 
 Route::get('usuario', [UsuarioController::class, 'lerUsuario']);
 Route::put('usuario/{id}', [UsuarioController::class, 'atualizarUsuario']);
@@ -20,6 +22,7 @@ Route::get('usuario/agendamentos', [UsuarioController::class, 'agendamentos']);
 
 
 Route::get('babeiros', [BarbeiroController::class, 'listarBarbeiros']);
+Route::get('localiza-babeiros', [BarbeiroController::class, 'localizaBarbeiros']);
 Route::get('babeiro/{id}', [BarbeiroController::class, 'acessarBarbeiro']);
 Route::post('babeiro/{id}/agendamento', [BarbeiroController::class, 'criarAgendamento']);
 
