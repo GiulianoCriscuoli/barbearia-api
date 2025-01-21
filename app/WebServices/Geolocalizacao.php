@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Exception;
 
 class GeoLocalizacao {
-    protected string $chave;
+    private string $chave;
     protected string $url;
 
     public function __construct(string $chave = null) {
