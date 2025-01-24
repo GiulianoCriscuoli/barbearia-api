@@ -19,4 +19,18 @@ class Barbeiro extends Model
         return $this->hasMany(BarbeiroServicos::class);
     }
 
+    public function depoimentos() {
+
+        return $this->hasMany(BarbeiroDepoimento::class);
+    }
+
+    public function disponibilidades()
+    {
+        return $this->hasMany(BarbeiroDisponibilidade::class);
+    }
+
+    public function agendamentos()
+    {
+        return $this->hasMany(Agendamento::class);
+    }
 }

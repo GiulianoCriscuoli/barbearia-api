@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agendamento;
 use App\Models\Barbeiro;
 use Illuminate\Http\Request;
 use App\WebServices\GeoLocalizacao;
@@ -38,9 +39,67 @@ class BarbeiroController extends Controller
 
         $fotosBarbeiro = $barbeiro->fotos()->select('url')->get();
         $servicosBarbeiro = $barbeiro->servicos()->select(['preco', 'nome'])->get();
+        $depoimentosBarbeiro = $barbeiro->depoimentos()->select(['avaliacao', 'nome', 'depoimento'])->get();
+        $disponibilidadeBarbeiro = $barbeiro->disponibilidades()->select(['weekday', 'hours'])->get();
+
+        $horariosDisponiveisPorDia = [];
+
+        foreach($disponibilidadeBarbeiro as $disp) {
+            $horariosDisponiveisPorDia[$disp['weekday']] = explode(',', $disp['hours']);
+        }
+
+        $agendamentos = [];
+
+        $agendamentosUsuario = $barbeiro->agendamentos()
+        ->whereBetween('data_agendamento', [
+            date('Y-m-d').' 00:00:00',
+            date('Y-m-d', strtotime('+30 days')). ' 23:59:59'
+        ])->get();
+
+            foreach($agendamentosUsuario as $agendamento) {
+                $agendamentos = $agendamento['data_agendamento'];
+            }
+
+            if (!is_array($agendamentos)) {
+                $agendamentos = [$agendamentos];
+            }
+
+            $disponiveis = [];
+
+            for ($dias = 0; $dias <= 30; $dias++) {
+                $tempoEmdias = strtotime('+' . $dias . ' days');
+                $diaDaSemana = date('w', $tempoEmdias);
+
+                if (isset($horariosDisponiveisPorDia[$diaDaSemana])) {
+                    $horas = [];
+                    $dia = date('Y-m-d', $tempoEmdias);
+
+                    foreach ($horariosDisponiveisPorDia[$diaDaSemana] as $disponivel) {
+                        $diaFormatado = $dia . ' ' . $disponivel . ':00';
+
+                        if (!in_array($diaFormatado, $agendamentos)) {
+                            $horas[] = $disponivel;
+                        }
+                    }
+
+                    if (count($horas) > 0) {
+                        $disponiveis[] = [
+                            'data' => $dia,
+                            'horas' => $horas
+                        ];
+                    }
+                }
+            }
 
         return response()->json([
-            'mensagem' => [$barbeiro, $fotosBarbeiro, $servicosBarbeiro]
+            'mensagem' => [
+                $barbeiro,
+                $fotosBarbeiro,
+                $servicosBarbeiro,
+                $depoimentosBarbeiro,
+                $agendamentos,
+                $disponiveis
+            ]
         ], 200);
     }
 
