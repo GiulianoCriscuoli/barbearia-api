@@ -33,7 +33,7 @@ class BarbeiroController extends Controller
 
         if(!$id) {
             return response()->json([
-                'mensagem' => 'Batbeiro não encontrado'
+                'mensagem' => 'Barbeiro não encontrado'
             ], 204);
         }
 

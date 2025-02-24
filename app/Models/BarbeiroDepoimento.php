@@ -8,4 +8,9 @@ class BarbeiroDepoimento extends Model
 {
     protected $table = 'barbeiro_depoimentos';
     public $timestamps = false;
+
+    public function barbeiro()
+    {
+        return $this->belongsTo(Barbeiro::class);
+    }
 }

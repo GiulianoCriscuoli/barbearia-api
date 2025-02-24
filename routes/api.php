@@ -21,9 +21,9 @@ Route::post('usuario/favorito', [UsuarioController::class, 'adicionarFavoritos']
 Route::get('usuario/agendamentos', [UsuarioController::class, 'agendamentos']);
 
 
-Route::get('babeiros', [BarbeiroController::class, 'listarBarbeiros']);
+Route::get('barbeiros', [BarbeiroController::class, 'listarBarbeiros']);
 Route::get('localiza-babeiros', [BarbeiroController::class, 'localizaBarbeiros']);
-Route::get('babeiro/{id}', [BarbeiroController::class, 'acessarBarbeiro']);
-Route::post('babeiro/{id}/agendamento', [BarbeiroController::class, 'criarAgendamento']);
+Route::get('barbeiro/{id}', [BarbeiroController::class, 'acessarBarbeiro']);
+Route::post('barbeiro/{id}/agendamento', [BarbeiroController::class, 'criarAgendamento']);
 
 Route::get('pesquisar', [BarbeiroController::class, 'pesquisarBarbeiro']);
